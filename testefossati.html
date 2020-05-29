@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id='extraDivs' style="position: absolute; top: 0px; left: 0px;"></div>
+    <div style="position: absolute; height: 500px; width: 500px;
+        top: 10px; left: 10px; border: 10px solid green;">
+    </div>
+    <div id=2 style="position: absolute; height: 10px; 
+        width: 10px; top: 20px; left: 20px; background-color: black;">
+    </div>
+    <div id=1 style="position: absolute; height: 10px; 
+        width: 10px; top: 20px; left: 30px; background-color: black;">
+    </div>
+    <div id=0 style="position: absolute; height: 10px; 
+        width: 10px; top: 20px; left: 40px; background-color: black;">
+    </div>
+    <div id='food' style="position: absolute; height: 10px; 
+        width: 10px; top: 20px; left: 80px; background-color: red;">
+    </div>
+    </div>
+    <div id="restart" style="position: absolute; top: 150px; left: 80px; color:burlywood;
+        font-family: Courier New; font-size: 40px; text-align: center; display: none;">
+        PRESSIONE ESPAÇO</br>PARA RECOMEÇAR
+    </div>
+    <div id='points' style="position: absolute; top: 10px; left: 550px;
+        font-family: Courier New; font-size: 40px; text-align: center;">
+        SUA PONTUAÇÃO<p id='points_p'>0</p>
+    </div>
+
+    <script>
+        document.addEventListener('keydown', onKeyPress)
+
+        let snake = []
+        snake[0] = { x: 40, y: 20 }
+        snake[1] = { x: 30, y: 20 }
+        snake[2] = { x: 20, y: 20 }
+
+        let lastX = 0
+        let lastY = 0
+        let direction = 'Right'
+        let canChange = true
+        let run = true
+
+        function onKeyPress(event) {
+            if(event.key == 'ArrowUp' && direction != 'Down' && canChange) direction = 'Up'
+            else if(event.key == 'ArrowDown' && direction != 'Up' && canChange) direction = 'Down'
+            else if(event.key == 'ArrowRight' && direction != 'Left' && canChange) direction = 'Right'
+            else if(event.key == 'ArrowLeft' && direction != 'Right' && canChange) direction = 'Left'
+            else if(event.code == 'Space') restart()
+
+            canChange = false
+        }
+
+        function restart() {
+            document.getElementById(2).style.top = 20 + 'px'
+            document.getElementById(2).style.left = 20 + 'px'
+            document.getElementById(1).style.top = 20 + 'px'
+            document.getElementById(1).style.left = 30 + 'px'
+            document.getElementById(0).style.top = 20 + 'px'
+            document.getElementById(0).style.left = 40 + 'px'
+            randomFood()
+            document.getElementById('restart').style.display = 'none'
+            document.getElementById('extraDivs').innerHTML = ''
+            document.getElementById('points_p').innerHTML = 0
+            
+            let length = snake.length
+
+            for(let i = 0; i < length - 3; i++) {
+                snake.pop()
+            }
+
+            console.log(snake.length)
+            
+            snake[0] = { x: 40, y: 20 }
+            snake[1] = { x: 30, y: 20 }
+            snake[2] = { x: 20, y: 20 }
+
+            direction = 'Right'
+            run = true
+        }
+
+        function increaseSnakeSize(x, y) {
+            let div = document.createElement('div')                
+            div.id = snake.length
+            div.style.position = 'absolute'
+            div.style.height = '10px'
+            div.style.width = '10px'
+            div.style.top = y + 'px'
+            div.style.left = x + 'px'
+            div.style.backgroundColor = 'black'
+            
+            document.getElementById('extraDivs').appendChild(div)
+            snake.push({ x: lastX, y: lastY })
+        }
+
+        function moveSnake() {
+            snake.forEach((part, i) => {
+                let x = part.x
+                let y = part.y
+
+                if(i == 0) {
+                    switch(direction) {
+                        case 'Up':
+                            part.y -= 10
+                            document.getElementById(i).style.top = part.y + 'px'
+                            break;
+                        case 'Down':
+                            part.y += 10
+                            document.getElementById(i).style.top = part.y + 'px'
+                            break;
+                        case 'Right': 
+                            part.x += 10
+                            document.getElementById(i).style.left = part.x + 'px'
+                            break;
+                        case 'Left':
+                            part.x -= 10
+                            document.getElementById(i).style.left = part.x + 'px'
+                            break;
+                        default: break;
+                    }
+                }
+                else {
+                    part.x = lastX
+                    part.y = lastY
+                    document.getElementById(i).style.left = lastX + 'px'
+                    document.getElementById(i).style.top = lastY + 'px'
+                }
+
+                lastX = x
+                lastY = y
+
+                if(part.x <= 10 || part.x >= 520 || part.y <= 10 || part.y >= 520) {
+                    run = false
+                    document.getElementById('restart').style.display = 'block'
+                }
+            })
+        }
+
+        function didSnakeAte() {
+            let food = document.getElementById('food')
+            
+            if(snake[0].x + 'px' == food.style.left && snake[0].y + 'px' == food.style.top)
+                return true
+
+            return false
+        }
+
+        function randomFood() {
+            let y = 20 + Math.random() * 500
+            let x = 20 + Math.random() * 500
+
+            let rest = y % 10
+            y -= rest
+
+            rest = x % 10
+            x -= rest
+
+            document.getElementById('food').style.top = y + 'px'
+            document.getElementById('food').style.left = x + 'px'
+        }
+
+        setInterval(() => {
+            if(run) {
+                moveSnake()
+
+                if( didSnakeAte() ) {
+                    let points = document.getElementById('points_p').innerHTML
+                    let total = 1 + parseInt(points)
+                    document.getElementById('points_p').innerHTML = total
+
+                    randomFood()
+                    increaseSnakeSize(lastX, lastY)
+                }
+
+                canChange = true
+            }
+        }, 100)
+    </script>
+</body>
+</html>

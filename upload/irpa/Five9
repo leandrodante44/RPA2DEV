@@ -1,0 +1,9 @@
+#Password=<< Existing password/certificate removed on export >>
+#
+#Tue Apr 07 18:39:04 UTC 2020
+Name=Five9
+URL=https\://api.five9.com\:443/wsadmin/v11/AdminWebService
+ProxyType=Internet
+Type=HTTP
+Authentication=BasicAuthentication
+User=fullcharge@vcimentos.com

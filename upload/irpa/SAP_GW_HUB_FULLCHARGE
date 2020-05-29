@@ -1,0 +1,15 @@
+#Password=<< Existing password/certificate removed on export >>
+#
+#Wed Apr 22 18:16:02 UTC 2020
+Description=GW HUB
+Type=HTTP
+Authentication=BasicAuthentication
+WebIDEUsage=odata_abap,ui5_execute_abap,dev_abap,bsp_execute_abap
+Name=SAP_GW_HUB_FULLCHARGE
+WebIDEEnabled=true
+URL=http\://brsaolsvfid01.votorantim.grupo\:8001
+ProxyType=OnPremise
+ClientReadTimeout=300000
+sap-client=100
+User=XCSDCCARGA
+WebIDESystem=FI1

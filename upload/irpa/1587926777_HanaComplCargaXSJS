@@ -1,0 +1,13 @@
+#Password=<< Existing password/certificate removed on export >>
+#
+#Sun Apr 19 17:12:02 UTC 2020
+Description=xsjs data consumption
+Type=HTTP
+Authentication=BasicAuthentication
+WebIDEUsage=odata_gen
+Name=HanaComplCargaXSJS
+WebIDEEnabled=true
+URL=https\://vcdatabasehlkoyxa06v.br1.hana.ondemand.com
+ProxyType=Internet
+User=P2001664935
+WebIDESystem=Carga_Complemento
